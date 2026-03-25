@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine     # 使用基于alpine的轻量级镜像
+    container_name: my-redis
+    # 限制内存为256MB
+    mem_limit: 256m
+    # 限制Redis自身的最大内存为200MB，留一些给系统
+    command: redis-server --maxmemory 200mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:6
+    container_name: my-mongodb
+    # 限制容器内存为512MB
+    mem_limit: 512m
+    # 通过命令限制WiredTiger缓存为256MB，在512MB的容器内运行会更从容
+    command: mongod --wiredTigerCacheSizeGB 0.25
+    ports:
+      - "27017:27017"
+    # 挂载一个卷来持久化数据，防止容器删除后数据丢失
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: my-es
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    ports:
+      - "9200:9200"
+    mem_limit: 1g
+# 定义卷，用于MongoDB数据持久化
+volumes:
+  mongo-data:
