@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "ai-agent"
+version = "0.1.0"
+description = "AI Agent Project"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"  # 可选，推荐添加
+packages = [{include = "ai_agent"}]  # 对应你的项目包名
+
+[tool.poetry.dependencies]
+# 核心：强制适配 Python 3.12+
+python = "^3.12"
+# Web 框架（最新稳定版）
+fastapi = "^0.115.6"
+# ASGI 服务器
+uvicorn = "^0.32.1"
+# Redis 客户端（Python 3.12 兼容最新版）
+redis = "^5.2.0"
+# 数据验证（核心依赖，最新版）
+pydantic = "^2.10.4"
+# 环境配置管理
+pydantic-settings = "^2.6.1"
+
+openai = ""
+
+mem0ai = ""
+
+# MongoDB 异步驱动
+motor = "^3.6"
+
+# 向量数据库 ChromaDB
+chromadb = "^0.5"
+
+ollama = "^0.6.1"
+langchain_openai = "^1.1.12"
+langgraph = "^1.1.6"
+langgraph-supervisor  = "^0.0.31"
+# 新版 Poetry 开发依赖分组（替代旧的 dev-dependencies）
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
